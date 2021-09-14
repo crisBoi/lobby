@@ -1,32 +1,40 @@
 package com.example.lby
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.lby.viewModel.LobbyViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+
 import java.lang.String
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
-class LobbyActivity : AppCompatActivity() {
+
+class LobbyActivity : AppCompatActivity(){
 
     private lateinit var viewModel:LobbyViewModel
     private var bottomSheet: BottomSheet = BottomSheet(ArrayList(), this)
     val BOTTOM_SHEET_TAG = "BOTTOM_SHEET_TAG"
+    private var seconds = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         init()
+
+
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun init() {
         viewModel = ViewModelProvider(this).get(LobbyViewModel::class.java)
 
@@ -47,23 +55,32 @@ class LobbyActivity : AppCompatActivity() {
     }
 
 
+
+
+
     private fun sessionTime() {
-        object : CountDownTimer(30 * 60 * 1000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
 
-                val text = String.format(
-                    Locale.getDefault(), "%02d:%02d:%02d",
-                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished) % 60,
-                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60,
-                    TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60,
+        val handler = Handler()
+        handler.post(object : Runnable {
+            override fun run() {
+                val hours: Int = seconds / 3600
+                val minutes: Int = seconds % 3600 / 60
+                val secs: Int = seconds % 60
 
+
+                val time = String
+                    .format(
+                        Locale.getDefault(),
+                        "%d:%02d:%02d", hours,
+                        minutes, secs
                     )
 
-                timer_tv.text = text
+                timer_tv.setText(time)
+
+                seconds++
+                handler.postDelayed(this, 1000)
             }
-            override fun onFinish() {
-            }
-        }.start()
+        })
     }
 
     private fun estimatedWaitingTime() {
@@ -82,5 +99,6 @@ class LobbyActivity : AppCompatActivity() {
             }
         }.start()
     }
+
 
 }
