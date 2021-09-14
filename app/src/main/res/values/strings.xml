@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Lby</string>
+    <string name="msg">Dr. Rahul is waiting for you in the lobby. Click join to enter the lobby.</string>
+    <string name="JOIN">JOIN</string>
+</resources>
