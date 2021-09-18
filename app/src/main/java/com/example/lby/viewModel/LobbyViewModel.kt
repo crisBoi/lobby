@@ -17,6 +17,8 @@ class LobbyViewModel: ViewModel() {
         resourceListMtb = MutableLiveData();
         resourceListMtb!!.value = Resource.generateList()
 
+
+
     }
 
     fun getResource(): LiveData<ArrayList<Resource>>? {

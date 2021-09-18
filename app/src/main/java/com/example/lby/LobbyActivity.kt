@@ -8,13 +8,18 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.lby.respository.MyRetrofit
 import com.example.lby.viewModel.LobbyViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 
 import java.lang.String
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import kotlin.math.log
 
 
 class LobbyActivity : AppCompatActivity(){
@@ -51,12 +56,19 @@ class LobbyActivity : AppCompatActivity(){
         sessionTime()
         estimatedWaitingTime()
 
+        callAPI()
 
     }
 
 
 
+    private fun callAPI() {
 
+        CoroutineScope(IO).launch {
+            val base = MyRetrofit.getInstance().getRepos()
+            println("Data received: ${base.get(0).id.toString()}")
+        }
+    }
 
     private fun sessionTime() {
 
